@@ -54,7 +54,7 @@ void print_world(size_t player_row, size_t player_col) {
 	movecursor(0, 0);
 	for (size_t row = 0; row < world_map.size(); row++) {
 		for (size_t col = 0; col < world_map.at(row).size(); col++) {
-			if (row == player_row and col == player_col) cout << '@';
+			if (row == player_row and col == player_col) cout << "@";
 			else
 				cout << world_map.at(row).at(col);
 		}
@@ -163,8 +163,8 @@ int main() {
 			set_world_location(row, col, ' ');
 			movecursor(ROWS + 2, 0);
 			cout << "You picked up the winning shell!\n";
-			for (int i = 0; i < last_col; i++) {
-				set_world_location(row, i, '~');
+			for (int i = 1; i < 31; i++) {
+				set_world_location(14, i, '~');
 			}
 		}
 		if (get_world_location(row, col) == 'z') {
@@ -180,7 +180,7 @@ int main() {
 //MAP ENDS HERE
 
 
-	//PUZZLE IDEAS: 
+	//PUZZLE IDEAS:
 	//Puzzle 1 is also the introduction to the game. It'll be simple
 	// and (hopefully) obvious enough for players to complete.
 
@@ -225,7 +225,7 @@ int main() {
 
 	//after we smash the oyster it'll leave the pearl ⚪ for the player to pick up
 	//the game is in color so it'll make more visual sense in color form
-	
+
 
 
 
