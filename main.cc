@@ -64,9 +64,25 @@ void print_world(size_t player_row, size_t player_col) {
 	}
 }
 
-
+//TODO: Make a class/struct
+//i was thinking of making an inventory thing idk
+struct Inventory {
+	string name = "none";
+	string color = BOLDBLACK;
+	string icon = "❌";
+	void PrintInventory() {
+		if (name != "none") {
+			//TODO: add some sort of way to make the inventory less cluttered
+			cout << "INVENTORY: ";
+			cout << color << name << icon << RESET;
+			cout << endl;
+		}
+	}
+};
 
 int main() {
+	//vector for the class
+	vector<Inventory> InventoryItems;
 
 	//MAP STARTS HERE
 
@@ -154,9 +170,13 @@ int main() {
 			cout << BLUE << "ROW: " << row << RED << " COL: " << col << RESET;
 			movecursor(ROWS + 2, 0);
 			cout << "Welcome to the game\n";
+			for (int i = 0; i < InventoryItems.size(); i++) {
+				InventoryItems.at(i).PrintInventory();
+			}
 			cout.flush();
 		}
 		//make the walls actually work
+		//TODO: make the collitions better
 		if (get_world_location(row, col) == '-') {
 			if (c == 'W' or c == UP_ARROW) {
 				row += 1;
@@ -177,6 +197,11 @@ int main() {
 			set_world_location(row, col, ' ');
 			movecursor(ROWS + 2, 0);
 			cout << "You picked up a shell!\n";
+			Inventory shell;
+			shell.name = "Shell";
+			shell.icon = "🐚";
+			shell.color = BOLDWHITE;
+			InventoryItems.push_back(shell);
 		}
 		if (get_world_location(row, col) == 'B') {
 			set_world_location(row, col, ' ');
@@ -185,6 +210,11 @@ int main() {
 			for (int i = 1; i < 31; i++) {
 				set_world_location(14, i, '~');
 			}
+			Inventory blueShell;
+			blueShell.name = "Shell";
+			blueShell.icon = "🐚";
+			blueShell.color = BLUE;
+			InventoryItems.push_back(blueShell);
 		}
 		//END PUZZLE 1
 
