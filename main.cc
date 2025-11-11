@@ -54,9 +54,11 @@ void print_world(size_t player_row, size_t player_col) {
 	movecursor(0, 0);
 	for (size_t row = 0; row < world_map.size(); row++) {
 		for (size_t col = 0; col < world_map.at(row).size(); col++) {
+			char c = world_map.at(row).at(col);
 			if (row == player_row and col == player_col) cout << "@";
+			else if (c == '*') cout << GREEN << c << RESET;
 			else
-				cout << world_map.at(row).at(col);
+				cout << c ;
 		}
 		cout << endl;
 	}
