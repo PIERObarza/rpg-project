@@ -55,10 +55,16 @@ void print_world(size_t player_row, size_t player_col) {
 	for (size_t row = 0; row < world_map.size(); row++) {
 		for (size_t col = 0; col < world_map.at(row).size(); col++) {
 			char c = world_map.at(row).at(col);
-			if (row == player_row and col == player_col) cout << "@";
+			if (row == player_row and col == player_col) cout << '@';
 			else if (c == '*') cout << GREEN << c << RESET;
+			else if (c == 'B') cout << BLUE << c << RESET;
+			else if (c == 'S') cout << RED << c << RESET;
+			else if (c == 'r') cout << MAGENTA  << c << RESET;
+			else if (c == 'z') cout << BOLDCYAN  << c << RESET;
+			else if (c == 'd') cout << YELLOW  << c << RESET;
+			else if (c == 'x') cout << BOLDRED  << c << RESET;
 			else
-				cout << c ;
+				cout << c;
 		}
 		cout << endl;
 	}
