@@ -13,7 +13,6 @@ using namespace std;
 //MAP FUNCTION DECLARATIONS
 
 
-//Base for Level one only so far
 vector<string> world_map = {
 	"********************************",
 	"* f               f       |    *",
@@ -27,7 +26,7 @@ vector<string> world_map = {
 	"*     ---                      *",
 	"*                              *",
 	"*------------------------------*", // This row should turn into ~~~~~~~~~~~~~~~~~~~~~~~ once the player picks up the blue shell (B for now), allowing them to now cross it
-	"*                        d     *",
+	"*                        d     *", // Later parts of the map are written by ChatGPT with user modifications
 	"*       S       |              *",
 	"*   ---     --- |   d          *",
 	"*               |              *",
@@ -167,6 +166,7 @@ int main() {
 		}
 		//make the walls actually work
 		//TODO: make the collitions better
+		//CHATGPT WRITTEN COLLISIONS
 		if (get_world_location(row, col) == '-') {
 			if (c == 'A' or c == LEFT_ARROW) {
 				col += 1;
@@ -178,6 +178,7 @@ int main() {
 				row -= 1;
 			}
 		}
+		//CHATGPT WRITTEN COLLISIONS
 		if (get_world_location(row, col) == '|') {
 			if (c == 'A' or c == LEFT_ARROW) {
 				col += 1;
@@ -189,6 +190,7 @@ int main() {
 				row -= 1;
 			}
 		}
+		//CHATGPT WRITTEN COLLISIONS
 		if (get_world_location(row, col) == '*') {
             if (c == 'A' or c == LEFT_ARROW) {
                 col += 1;
