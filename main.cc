@@ -8,6 +8,7 @@
 #include <vector>
 #include <algorithm>
 #include <unistd.h>
+#include <limits>
 using namespace std;
 
 //MAP FUNCTION DECLARATIONS
@@ -57,12 +58,18 @@ void print_world(size_t player_row, size_t player_col) {
 			char c = world_map.at(row).at(col);
 			if (row == player_row and col == player_col) cout << '@';
 			else if (c == '*') cout << GREEN << c << RESET;
-			else if (c == 'B') cout << BLUE << c << RESET;
-			else if (c == 'S') cout << RED << c << RESET;
-			else if (c == 'r') cout << MAGENTA  << c << RESET;
-			else if (c == 'z') cout << BOLDCYAN  << c << RESET;
-			else if (c == 'd') cout << YELLOW  << c << RESET;
-			else if (c == 'x') cout << BOLDRED  << c << RESET;
+            else if (c == 'B') cout << BLUE << c << RESET;
+            else if (c == 'S') cout << RED << c << RESET;
+            else if (c == 'R') cout << MAGENTA  << c << RESET;
+            else if (c == 'K') cout << BOLDCYAN  << c << RESET;
+            else if (c == 'O') cout << YELLOW  << c << RESET;
+            else if (c == 'f') cout << BOLDRED  << c << RESET;
+            else if (c == 'a') cout << BOLDBLUE  << c << RESET;
+            else if (c == 'b') cout << BOLDGREEN  << c << RESET;
+            else if (c == 'C') cout << BOLDYELLOW  << c << RESET;
+            else if (c == 'G') cout << CYAN << c << RESET;
+			 else if (c == 'c') cout << GREEN << c << RESET;
+			  else if (c == 'L') cout << BOLDMAGENTA << c << RESET;
 			else
 				cout << c;
 		}
@@ -587,6 +594,247 @@ int main() {
 			}
 		}
 		//END OF PUZZLE 4
+		
+	// Tran -------------- AI Start ------------------
+
+
+		// --- COMBAT SYSTEM ADD-ON ---
+static int playerHealth = 15;
+static int goblinHealth = 10;
+
+const int PLAYER_DAMAGE = 2;   // @ deals 2 damage
+const int GOBLIN_DAMAGE = 2;   // Goblin deals 2 damage
+const int AFTER_BATTLE_DAMAGE = 5;
+
+if (get_world_location(row, col) == 'G') {
+
+    movecursor(ROWS + 2, 0);
+    cout << "A goblin appears!\n";
+
+    // Combat loop
+    while (playerHealth > 0 && goblinHealth > 0) {
+        cout << "\n--- COMBAT ---\n";
+        cout << GREEN << "@ Health: " << GREEN <<  playerHealth << RESET << endl;
+        cout << RED << "Goblin Health: " << RED <<  goblinHealth << RESET << endl;
+        cout << MAGENTA << "@ Damage: " << MAGENTA  << PLAYER_DAMAGE << RESET << endl;
+        cout << BOLDCYAN    << "Goblin Damage: " << CYAN  << GOBLIN_DAMAGE << RESET << endl;
+        cout << "Choose an action:\n";
+        cout << "(A) Attack\n";
+        cout << "(B) Use Item\n";
+        cout << "> ";
+
+        char choice;
+        do {
+            choice = toupper(quick_read());
+        } while (choice != 'A' && choice != 'B');
+
+        // --- A: ATTACK ---
+        if (choice == 'A') {
+
+            cout << "\n@ attacks and deals " << PLAYER_DAMAGE << " damage!\n";
+            goblinHealth -= PLAYER_DAMAGE;
+            cout << "Goblin HP is now: " << goblinHealth << endl;
+
+            if (goblinHealth <= 0) break;
+
+            cout << "Goblin attacks and deals " << GOBLIN_DAMAGE << " damage!\n";
+            playerHealth -= GOBLIN_DAMAGE;
+            cout << "@ HP is now: " << playerHealth << endl;
+        }
+
+        // --- B: USE ITEM ---
+        else if (choice == 'B') {
+
+            cout << "\n----- YOUR INVENTORY -----\n";
+
+            if (InventoryItems.empty()) {
+                cout << "Inventory is empty.\n";
+                cout << "---------------------------\n";
+                usleep(800000);
+                continue;
+            }
+
+            // Print items
+            for (int i = 0; i < InventoryItems.size(); i++) {
+                cout << i + 1 << ". ";
+                InventoryItems[i].PrintInventory();
+            }
+
+            cout << "---------------------------\n";
+
+            // clean buffer
+            cin.clear();
+            cin.ignore(1000, '\n');
+
+            cout << "Select item number to use (0 to cancel): ";
+
+            string numStr;
+            cin >> numStr;
+
+            cout << "You selected: " << numStr << endl;
+
+            if (numStr == "0") {
+                cout << "Canceled.\n";
+                usleep(800000);
+                continue;
+            }
+
+            int index = stoi(numStr) - 1;
+
+            if (index >= 0 && index < InventoryItems.size()) {
+
+                // Shell🐚 effect
+                if (InventoryItems[index].name == "Shell" ||
+                    InventoryItems[index].name == "Shell🐚")
+                {
+                    playerHealth += 2;
+                    cout << "You used Shell🐚! +2 HP recovered.\n";
+                    cout << "@ HP is now: " << playerHealth << endl;
+
+                    InventoryItems.erase(InventoryItems.begin() + index);
+                }
+                else {
+                    cout << "This item has no effect.\n";
+                }
+            }
+            else {
+                cout << "Invalid choice.\n";
+            }
+
+            usleep(800000);
+            continue;
+        }
+
+        usleep(800000);
+    }
+
+    // --- End states ---
+    if (playerHealth <= 0) {
+        cout << "\nYou have been defeated...\n";
+        usleep(2000000);
+        exit(0);
+    }
+
+    if (goblinHealth <= 0) {
+        cout << "\nYou defeated the goblin!\n";
+
+        // After battle penalty
+        cout << CYAN << "@ takes " << AFTER_BATTLE_DAMAGE << " damage after battle!\n" << RESET;
+        playerHealth -= AFTER_BATTLE_DAMAGE;
+        cout << GREEN << "@ HP is now: " << playerHealth << RESET << endl;
+
+        if (playerHealth <= 0) {
+            cout << "\n@ collapses after the battle...\n";
+            usleep(2000000);
+            exit(0);
+        }
+
+        set_world_location(row, col, ' ');
+        usleep(1500000);
+    }
+}
+// --- END COMBAT SYSTEM ---
+
+		// ----------------------AI End----------------------------------
+        // In the combat system, we used AI to complete the project.
+
+       //  In this part, when the location @ == "G", @ will fight with goblin. Print out the blood, the damage of @ (default blood is 15) and the blood of globin (default blood is 10), and the default damage of both is 2 dame. Next, print out 2 options (A) to attack, (B) to use items. If (A) is chosen, @ will attack and goblin will lose 2 blood points, then goblin will attack @ and @ will lose 2 blood points. Items, can use "Shell🐚" to increase @'s current blood. After winning, @ will be increased by 5 damage, if it fails, the game will end.		
+		
+
+		if (walrusCount == 0) {
+			if (get_world_location(row, col) == 'c') {
+				cout << CYAN << "WALRUS🦭:" << RESET << endl;
+				cout << "Correct! It is the clownfish.\n";
+				cout << "Come to me to recieve your next question." << endl;
+				//deletes a, b, and c from the world, the numbers can be changed as need be
+				set_world_location(13, 23, ' ');
+				set_world_location(13, 25, ' ');
+				set_world_location(13, 27, ' ');
+				movecursor(ROWS + 2, 0);
+				Inventory right1;
+				right1.name = "c) The Clownfish";
+				right1.icon = "🐠";
+				right1.color = YELLOW;
+				//OPTIONAL: figure out how to make the text orange
+				InventoryItems.push_back(right1);
+				walrusCount ++;
+			} else if ((get_world_location(row, col) == 'b') || (get_world_location(row, col) == 'a')) {
+				cout << CYAN << "WALRUS🦭:" << RESET << endl;
+				cout << "That is incorrect. The answer was the clownfish. Have you ever seen Finding Nemo?" << endl;
+				cout << "Come to me to recieve your next question." << endl;
+				set_world_location(13, 23, ' ');
+				set_world_location(13, 25, ' ');
+				set_world_location(13, 27, ' ');
+				movecursor(ROWS + 2, 0);
+				Inventory wrong1;
+				wrong1.name = "Wrong!";
+				wrong1.icon = "❌";
+				wrong1.color = RED;
+				InventoryItems.push_back(wrong1);
+				walrusCount ++;
+			}
+		} else if (walrusCount == 1) {
+			if (get_world_location(row, col) == 'b') {
+				cout << CYAN << "WALRUS🦭:" << RESET << endl;
+				cout << "Correct! It is the whale shark.\n";
+				cout << "Come to me to recieve your final question." << endl;
+				set_world_location(13, 23, ' ');
+				set_world_location(13, 25, ' ');
+				set_world_location(13, 27, ' ');
+				movecursor(ROWS + 2, 0);
+				Inventory right2;
+				right2.name = "b) The Whale Shark";
+				right2.icon = "🦈";
+				right2.color = BOLDBLACK;
+				InventoryItems.push_back(right2);
+				walrusCount ++;
+			} else if ((get_world_location(row, col) == 'c') || (get_world_location(row, col) == 'a')) {
+				cout << CYAN << "WALRUS🦭:" << RESET << endl;
+				cout << "That is incorrect. The largest shark is actually the whale shark.\n";
+				cout << "Come to me to recieve your final question." << endl;
+				set_world_location(13, 23, ' ');
+				set_world_location(13, 25, ' ');
+				set_world_location(13, 27, ' ');
+				movecursor(ROWS + 2, 0);
+				Inventory wrong2;
+				wrong2.name = "Wrong!";
+				wrong2.icon = "❌";
+				wrong2.color = RED;
+				InventoryItems.push_back(wrong2);
+				walrusCount ++;
+			}
+		} else if (walrusCount == 2) {
+			if (get_world_location(row, col) == 'a') {
+				cout << CYAN << "WALRUS🦭:" << RESET << endl;
+				cout << "Correct! It is bioluminescence.\n";
+				cout << "Come to me to recieve your score." << endl;
+				set_world_location(13, 23, ' ');
+				set_world_location(13, 25, ' ');
+				set_world_location(13, 27, ' ');
+				movecursor(ROWS + 2, 0);
+				Inventory right3;
+				right3.name = "a) Bioluminescence";
+				right3.icon = "💡";
+				right3.color = BLUE;
+				InventoryItems.push_back(right3);
+				walrusCount ++;
+			} else if ((get_world_location(row, col) == 'c') || (get_world_location(row, col) == 'b')) {
+				cout << CYAN << "WALRUS🦭:" << RESET << endl;
+				cout << "That is incorrect. The correct term is bioluminescence. Waterlights are something in Terraria and I just made up sealumens.\n";
+				cout << "Come to me to recieve your score." << endl;
+				set_world_location(13, 23, ' ');
+				set_world_location(13, 25, ' ');
+				set_world_location(13, 27, ' ');
+				movecursor(ROWS + 2, 0);
+				Inventory wrong3;
+				wrong3.name = "Wrong!";
+				wrong3.icon = "❌";
+				wrong3.color = RED;
+				InventoryItems.push_back(wrong3);
+				walrusCount ++;
+			}
+		}
+		//END OF PUZZLE 4
 		//PUZZLE 5
 		//Eat all the fish
 		//for the sake of getting the game done, the player needs to eat all 7 fish to win.
@@ -608,7 +856,7 @@ int main() {
 		//*
 		if (fishCount == 7) {
 			movecursor(ROWS + 2, 0);
-			cout << "YOU WIN!!!!!!!!!\n";
+			cout << "YOU WIN!!!!!!!!!\n";
 			usleep(2'000'000);
 			break;
 		}//*
@@ -675,5 +923,3 @@ int main() {
 
 
 }
-
-
