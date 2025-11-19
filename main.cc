@@ -736,7 +736,9 @@ if (get_world_location(row, col) == 'G') {
 // --- END COMBAT SYSTEM ---
 
 		// ----------------------AI End----------------------------------
-		
+        // In the combat system, we used AI to complete the project.
+
+       //  In this part, when the location @ == "G", @ will fight with goblin. Print out the blood, the damage of @ (default blood is 15) and the blood of globin (default blood is 10), and the default damage of both is 2 dame. Next, print out 2 options (A) to attack, (B) to use items. If (A) is chosen, @ will attack and goblin will lose 2 blood points, then goblin will attack @ and @ will lose 2 blood points. Items, can use "Shell🐚" to increase @'s current blood. After winning, @ will be increased by 5 damage, if it fails, the game will end.		
 		
 		//PUZZLE 5
 		//Eat all the fish
