@@ -16,17 +16,17 @@ using namespace std;
 //Base for Level one only so far
 vector<string> world_map = {
 	"********************************",
-	"* r                       |    *",
-	"*  S                      | d  *",
+	"* f               f       |    *",
+	"*  S                      | f  *",
 	"*          S              |    *",
-	"*                       x ---  *",
-	"*     ---                    z *",
+	"*                       f ---  *",
+	"*     ---                    f *",
 	"*     |B|                      *",
 	"* S   | -- S                   *",
-	"*   S |                    r   *",
+	"*   S |                    f   *",
 	"*     ---                      *",
 	"*                              *",
-	"*                              *",
+	"*   f                          *",
 	"*                              *",
 	"*                              *",
 	"*------------------------------*", // This row should turn into ~~~~~~~~~~~~~~~~~~~~~~~ once the player picks up the blue shell (B for now), allowing them to now cross it
@@ -94,6 +94,8 @@ int main() {
 	int walrusCount = 0;
 	int correctCount = 0;
 	int wrongCount = 0;
+	int fishCount = 0;
+
 
 	//MAP STARTS HERE
 	//TODO non blocking IO demo code
@@ -133,7 +135,11 @@ int main() {
 		//make the walls actually work
 		//TODO: make the collitions better
 		if (get_world_location(row, col) == '-') {
-			if (c == 'W' or c == UP_ARROW) {
+			if (c == 'A' or c == LEFT_ARROW) {
+				col += 1;
+			} else if (c == 'S' or c == RIGHT_ARROW) {
+				col -= 1;
+			} else if (c == 'W' or c == UP_ARROW) {
 				row += 1;
 			} else {
 				row -= 1;
@@ -142,8 +148,12 @@ int main() {
 		if (get_world_location(row, col) == '|') {
 			if (c == 'A' or c == LEFT_ARROW) {
 				col += 1;
-			} else {
+			} else if (c == 'S' or c == RIGHT_ARROW) {
 				col -= 1;
+			} else if (c == 'W' or c == UP_ARROW) {
+				row += 1;
+			} else {
+				row -= 1;
 			}
 		}
 		//PUZZLE 1:
@@ -553,14 +563,25 @@ int main() {
 		}
 		//END OF PUZZLE 4
 		//PUZZLE 5
-
-
-
+		//Eat all the fish
+		//for the sake of getting the game done, the player needs to eat all 7 fish to win.
+		//but that number can be changed idc
+		if (get_world_location(row, col) == 'f') {
+			set_world_location(row, col, ' ');
+			movecursor(ROWS + 2, 0);
+			cout << "You ate a fish!\n";
+			Inventory fish;
+			fish.name = "Fish";
+			fish.icon = "🐟";
+			fish.color = BOLDBLUE;
+			InventoryItems.push_back(fish);
+			fishCount++;
+		}
 
 		//idk why but when i comment out the code in asterisks it breaks the program lol
 		//specifically it says there's mismatched curly braces
 		//*
-		if (get_world_location(row, col) == 'z') {
+		if (fishCount == 7) {
 			movecursor(ROWS + 2, 0);
 			cout << "YOU WIN!!!!!!!!!\n";
 			usleep(2'000'000);
@@ -569,9 +590,7 @@ int main() {
 		//so we should probably fix that at some point
 		if (c == ERR) usleep(1'000'000 / FPS);
 	}
-
-
-	//MAP ENDS HERE
+	//END PUZZLE 5
 
 
 	//PUZZLE IDEAS:
