@@ -26,10 +26,17 @@ vector<string> world_map = {
 	"*   S |                    f   *",
 	"*     ---                      *",
 	"*                              *",
-	"*   f                          *",
-	"*                              *",
-	"*                              *",
 	"*------------------------------*", // This row should turn into ~~~~~~~~~~~~~~~~~~~~~~~ once the player picks up the blue shell (B for now), allowing them to now cross it
+	"*                        d     *",
+	"*       S       |              *",
+	"*   ---     --- |   d          *",
+	"*               |              *",
+	"*   |     |     |   ---        *",
+	"*   |  S  |     |              *",
+	"*   ---     --- |      S       *",
+	"*   |K|--      |   B           *",
+	"*   |                          *",
+	"*------------------------------*",
 	"*                              *",
 	"*                              *",
 	"*                              *",
@@ -103,7 +110,7 @@ int main() {
 	const int ROWS = world_map.size();
 	const int COLS = world_map.at(0).size(); //MAKE SURE ALL ROWS ARE THE SAME SIZE OR BAD TIMES
 	const int FPS = 60;
-	int row = ROWS / 2, col = COLS / 2;
+	int row = 2, col = 5;
 	int last_row = -1, last_col = -1; //Save our last position so we only redraw on update
 	set_raw_mode(true);
 	show_cursor(false);
@@ -137,7 +144,7 @@ int main() {
 		if (get_world_location(row, col) == '-') {
 			if (c == 'A' or c == LEFT_ARROW) {
 				col += 1;
-			} else if (c == 'S' or c == RIGHT_ARROW) {
+			} else if (c == 'D' or c == RIGHT_ARROW) {
 				col -= 1;
 			} else if (c == 'W' or c == UP_ARROW) {
 				row += 1;
@@ -148,7 +155,7 @@ int main() {
 		if (get_world_location(row, col) == '|') {
 			if (c == 'A' or c == LEFT_ARROW) {
 				col += 1;
-			} else if (c == 'S' or c == RIGHT_ARROW) {
+			} else if (c == 'D' or c == RIGHT_ARROW) {
 				col -= 1;
 			} else if (c == 'W' or c == UP_ARROW) {
 				row += 1;
@@ -156,6 +163,17 @@ int main() {
 				row -= 1;
 			}
 		}
+		if (get_world_location(row, col) == '*') {
+            if (c == 'A' or c == LEFT_ARROW) {
+                col += 1;
+            } else if (c == 'D' or c == RIGHT_ARROW) {
+                col -= 1;
+            } else if (c == 'W' or c == UP_ARROW) {
+                row += 1;
+            } else {
+                row -= 1;
+            }
+        }
 		//PUZZLE 1:
 		//Collision detection for the "shells"
 		if (get_world_location(row, col) == 'S') {
@@ -172,8 +190,8 @@ int main() {
 			set_world_location(row, col, ' ');
 			movecursor(ROWS + 2, 0);
 			cout << "You picked up the blue shell!\n";
-			for (int i = 1; i < 31; i++) {
-				set_world_location(14, i, '~');
+			for (int i = 1; i < COLS-1; i++) {
+				set_world_location(11, i, '~');
 			}
 			Inventory blueShell;
 			blueShell.name = "Shell";
@@ -212,6 +230,9 @@ int main() {
 			set_world_location(row, col, ' ');
 			movecursor(ROWS + 2, 0);
 			cout << "You picked up the key!\n";
+			for (int i = 1; i < COLS-1; i++) {
+				set_world_location(21, i, '~');
+			}
 			Inventory key;
 			key.name = "Key";
 			key.icon = "🔑";
@@ -242,7 +263,7 @@ int main() {
 				if (crowCount < 2) {
 					if (c == 'A' or c == LEFT_ARROW) {
 						col += 1;
-					} else if (c == 'S' or c == RIGHT_ARROW) {
+					} else if (c == 'D' or c == RIGHT_ARROW) {
 						col -= 1;
 					} else if (c == 'W' or c == UP_ARROW) {
 						row += 1;
@@ -257,7 +278,7 @@ int main() {
 				} else if (crowCount == 2) {
 					if (c == 'A' or c == LEFT_ARROW) {
 						col += 1;
-					} else if (c == 'S' or c == RIGHT_ARROW) {
+					} else if (c == 'D' or c == RIGHT_ARROW) {
 						col -= 1;
 					} else if (c == 'W' or c == UP_ARROW) {
 						row += 1;
@@ -270,7 +291,7 @@ int main() {
 				} else if (crowCount == 3) {
 					if (c == 'A' or c == LEFT_ARROW) {
 						col += 1;
-					} else if (c == 'S' or c == RIGHT_ARROW) {
+					} else if (c == 'D' or c == RIGHT_ARROW) {
 						col -= 1;
 					} else if (c == 'W' or c == UP_ARROW) {
 						row += 1;
@@ -316,7 +337,7 @@ int main() {
 				if (oysterCount < 2) {
 					if (c == 'A' or c == LEFT_ARROW) {
 						col += 1;
-					} else if (c == 'S' or c == RIGHT_ARROW) {
+					} else if (c == 'D' or c == RIGHT_ARROW) {
 						col -= 1;
 					} else if (c == 'W' or c == UP_ARROW) {
 						row += 1;
@@ -329,7 +350,7 @@ int main() {
 				} else if (oysterCount == 2) {
 					if (c == 'A' or c == LEFT_ARROW) {
 						col += 1;
-					} else if (c == 'S' or c == RIGHT_ARROW) {
+					} else if (c == 'D' or c == RIGHT_ARROW) {
 						col -= 1;
 					} else if (c == 'W' or c == UP_ARROW) {
 						row += 1;
@@ -342,7 +363,7 @@ int main() {
 				} else if (oysterCount == 3) {
 					if (c == 'A' or c == LEFT_ARROW) {
 						col += 1;
-					} else if (c == 'S' or c == RIGHT_ARROW) {
+					} else if (c == 'D' or c == RIGHT_ARROW) {
 						col -= 1;
 					} else if (c == 'W' or c == UP_ARROW) {
 						row += 1;
@@ -355,7 +376,7 @@ int main() {
 				}  else if (oysterCount == 4) {
 					if (c == 'A' or c == LEFT_ARROW) {
 						col += 1;
-					} else if (c == 'S' or c == RIGHT_ARROW) {
+					} else if (c == 'D' or c == RIGHT_ARROW) {
 						col -= 1;
 					} else if (c == 'W' or c == UP_ARROW) {
 						row += 1;
@@ -377,7 +398,7 @@ int main() {
 			if (walrusCount == 0) {
 				if (c == 'A' or c == LEFT_ARROW) {
 					col += 1;
-				} else if (c == 'S' or c == RIGHT_ARROW) {
+				} else if (c == 'D' or c == RIGHT_ARROW) {
 					col -= 1;
 				} else if (c == 'W' or c == UP_ARROW) {
 					row += 1;
@@ -395,7 +416,7 @@ int main() {
 			} else if (walrusCount == 1) {
 				if (c == 'A' or c == LEFT_ARROW) {
 					col += 1;
-				} else if (c == 'S' or c == RIGHT_ARROW) {
+				} else if (c == 'D' or c == RIGHT_ARROW) {
 					col -= 1;
 				} else if (c == 'W' or c == UP_ARROW) {
 					row += 1;
@@ -412,7 +433,7 @@ int main() {
 			} else if (walrusCount == 2) {
 				if (c == 'A' or c == LEFT_ARROW) {
 					col += 1;
-				} else if (c == 'S' or c == RIGHT_ARROW) {
+				} else if (c == 'D' or c == RIGHT_ARROW) {
 					col -= 1;
 				} else if (c == 'W' or c == UP_ARROW) {
 					row += 1;
@@ -439,7 +460,7 @@ int main() {
 				if (correctCount == 3) {
 					if (c == 'A' or c == LEFT_ARROW) {
 						col += 1;
-					} else if (c == 'S' or c == RIGHT_ARROW) {
+					} else if (c == 'D' or c == RIGHT_ARROW) {
 						col -= 1;
 					} else if (c == 'W' or c == UP_ARROW) {
 						row += 1;
@@ -452,7 +473,7 @@ int main() {
 				} else if (correctCount == 2) {
 					if (c == 'A' or c == LEFT_ARROW) {
 						col += 1;
-					} else if (c == 'S' or c == RIGHT_ARROW) {
+					} else if (c == 'D' or c == RIGHT_ARROW) {
 						col -= 1;
 					} else if (c == 'W' or c == UP_ARROW) {
 						row += 1;
@@ -465,7 +486,7 @@ int main() {
 				} else if (correctCount == 1) {
 					if (c == 'A' or c == LEFT_ARROW) {
 						col += 1;
-					} else if (c == 'S' or c == RIGHT_ARROW) {
+					} else if (c == 'D' or c == RIGHT_ARROW) {
 						col -= 1;
 					} else if (c == 'W' or c == UP_ARROW) {
 						row += 1;
@@ -478,7 +499,7 @@ int main() {
 				} else if (wrongCount == 3) {
 					if (c == 'A' or c == LEFT_ARROW) {
 						col += 1;
-					} else if (c == 'S' or c == RIGHT_ARROW) {
+					} else if (c == 'D' or c == RIGHT_ARROW) {
 						col -= 1;
 					} else if (c == 'W' or c == UP_ARROW) {
 						row += 1;
