@@ -311,7 +311,7 @@ int main() {
 				pearl.color = BOLDWHITE;
 				InventoryItems.push_back(pearl);
 			} else {
-				//TODO: figure out why the text wont go past the first one
+				//I used AI to debug the code from here
 				if (oysterCount > 4) oysterCount = 0;
 				if (oysterCount < 2) {
 					if (c == 'A' or c == LEFT_ARROW) {
@@ -367,6 +367,7 @@ int main() {
 					usleep(2'000'000);
 				}
 			}
+			//To here
 		}
 		//END PUZZLE 3
 		//PUZZLE 4:
@@ -416,7 +417,9 @@ int main() {
 				cout << "Final Question: What is the term for light produced by marine animals?" << endl;
 				cout << "Is it a) Bioluminescence, b) Waterlights, or c) Sealumens?\n";
 				usleep(2'000'000);
-			} else if (walrusCount == 3) {
+			}
+			//I used AI to debug starting here
+			else if (walrusCount == 3) {
 				for (int i = 0; i < InventoryItems.size(); i++) {
 					if ((InventoryItems.at(i).name == "c) The Clownfish") || (InventoryItems.at(i).name == "b) The Whale Shark") || (InventoryItems.at(i).name == "a) Bioluminescence")) {
 						correctCount++;
@@ -478,6 +481,7 @@ int main() {
 					usleep(2'000'000);
 				}
 			}
+			//And ending here
 		}
 
 		//TODO: add in a system that replaces a, b, and c.
