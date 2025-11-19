@@ -388,7 +388,10 @@ int main() {
 				cout << "Hello, answer my trivia if you wish to pass" << endl;
 				cout << "First question: With which fish species do anemones have a symbiotic relationship?" << endl;
 				cout << "Is it a) The Catfish, b) The Shrimp, or c) The Clownfish?\n";
-				usleep(2'000'000);
+				set_world_location(13, 23, 'a');
+				set_world_location(13, 25, 'b');
+				set_world_location(13, 27, 'c');
+				usleep(3'000'000);
 			} else if (walrusCount == 1) {
 				if (c == 'A' or c == LEFT_ARROW) {
 					col += 1;
@@ -402,7 +405,10 @@ int main() {
 				cout << CYAN << "WALRUS🦭:" << RESET << endl;
 				cout << "Question 2: What is the largest species of shark?" << endl;
 				cout << "Is it a) The Great White Shark, b) The Whale Shark, or c) The Hammerhead Shark?\n";
-				usleep(2'000'000);
+				set_world_location(13, 23, 'a');
+				set_world_location(13, 25, 'b');
+				set_world_location(13, 27, 'c');
+				usleep(3'000'000);
 			} else if (walrusCount == 2) {
 				if (c == 'A' or c == LEFT_ARROW) {
 					col += 1;
@@ -416,7 +422,10 @@ int main() {
 				cout << CYAN << "WALRUS🦭:" << RESET << endl;
 				cout << "Final Question: What is the term for light produced by marine animals?" << endl;
 				cout << "Is it a) Bioluminescence, b) Waterlights, or c) Sealumens?\n";
-				usleep(2'000'000);
+				set_world_location(13, 23, 'a');
+				set_world_location(13, 25, 'b');
+				set_world_location(13, 27, 'c');
+				usleep(3'000'000);
 			}
 			//I used AI to debug starting here
 			else if (walrusCount == 3) {
@@ -484,13 +493,15 @@ int main() {
 			//And ending here
 		}
 
-		//TODO: add in a system that replaces a, b, and c.
 		if (walrusCount == 0) {
 			if (get_world_location(row, col) == 'c') {
 				cout << CYAN << "WALRUS🦭:" << RESET << endl;
 				cout << "Correct! It is the clownfish.\n";
 				cout << "Come to me to recieve your next question." << endl;
-				set_world_location(row, col, ' ');
+				//deletes a, b, and c from the world, the numbers can be changed as need be
+				set_world_location(13, 23, ' ');
+				set_world_location(13, 25, ' ');
+				set_world_location(13, 27, ' ');
 				movecursor(ROWS + 2, 0);
 				Inventory right1;
 				right1.name = "c) The Clownfish";
@@ -503,7 +514,9 @@ int main() {
 				cout << CYAN << "WALRUS🦭:" << RESET << endl;
 				cout << "That is incorrect. The answer was the clownfish. Have you ever seen Finding Nemo?" << endl;
 				cout << "Come to me to recieve your next question." << endl;
-				set_world_location(row, col, ' ');
+				set_world_location(13, 23, ' ');
+				set_world_location(13, 25, ' ');
+				set_world_location(13, 27, ' ');
 				movecursor(ROWS + 2, 0);
 				Inventory wrong1;
 				wrong1.name = "Wrong!";
@@ -517,7 +530,9 @@ int main() {
 				cout << CYAN << "WALRUS🦭:" << RESET << endl;
 				cout << "Correct! It is the whale shark.\n";
 				cout << "Come to me to recieve your final question." << endl;
-				set_world_location(row, col, ' ');
+				set_world_location(13, 23, ' ');
+				set_world_location(13, 25, ' ');
+				set_world_location(13, 27, ' ');
 				movecursor(ROWS + 2, 0);
 				Inventory right2;
 				right2.name = "b) The Whale Shark";
@@ -529,7 +544,9 @@ int main() {
 				cout << CYAN << "WALRUS🦭:" << RESET << endl;
 				cout << "That is incorrect. The largest shark is actually the whale shark.\n";
 				cout << "Come to me to recieve your final question." << endl;
-				set_world_location(row, col, ' ');
+				set_world_location(13, 23, ' ');
+				set_world_location(13, 25, ' ');
+				set_world_location(13, 27, ' ');
 				movecursor(ROWS + 2, 0);
 				Inventory wrong2;
 				wrong2.name = "Wrong!";
@@ -543,7 +560,9 @@ int main() {
 				cout << CYAN << "WALRUS🦭:" << RESET << endl;
 				cout << "Correct! It is bioluminescence.\n";
 				cout << "Come to me to recieve your score." << endl;
-				set_world_location(row, col, ' ');
+				set_world_location(13, 23, ' ');
+				set_world_location(13, 25, ' ');
+				set_world_location(13, 27, ' ');
 				movecursor(ROWS + 2, 0);
 				Inventory right3;
 				right3.name = "a) Bioluminescence";
@@ -555,7 +574,9 @@ int main() {
 				cout << CYAN << "WALRUS🦭:" << RESET << endl;
 				cout << "That is incorrect. The correct term is bioluminescence. Waterlights are something in Terraria and I just made up sealumens.\n";
 				cout << "Come to me to recieve your score." << endl;
-				set_world_location(row, col, ' ');
+				set_world_location(13, 23, ' ');
+				set_world_location(13, 25, ' ');
+				set_world_location(13, 27, ' ');
 				movecursor(ROWS + 2, 0);
 				Inventory wrong3;
 				wrong3.name = "Wrong!";
