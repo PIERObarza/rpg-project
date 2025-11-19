@@ -45,25 +45,25 @@ vector<string> world_map = {
 	"*   ---     |S                 *",
 	"*   S       |          S       *",
 	"*           |---               *",
-	"*   S       |          S  R    *",
+	"*   S                  S  R    *",
 	"*------------------------------*", // row 31, unlocks when Pearl given to Crow
 	"*       W       |S             *",
 	"*   ---     --- |      S       *",
 	"*   a       b   |              *",
 	"*   |S          |S     ---     *",
-	"*       c       |              *",
+	"*       c                      *",
 	"*   ---     --- |  S           *",
 	"*   S           |              *",
 	"*       S       |---           *",
 	"*   ---         |        S     *",
 	"*------------------------------*", // row 41, unlocks when Walrus questions complete
-	"*   f   S   f   |      S       *",
+	"*   f   S   f          S       *",
 	"*       ---     |   f          *",
-	"*   S       f   |         S    *",
+	"*   S       f             S    *",
 	"*       |   S   |---           *",
 	"*   f       |   |       f      *",
-	"*   ---     | S |              *",
-	"*   S       |   |   S          *",
+	"*   ---       S |              *",
+	"*   S       |       S          *",
 	"*   f       |---|       f      *",
 	"*   S   f       |S          S  *",
 	"*------------------------------*", // row 51, unlocks after all 7 fish eaten
@@ -282,6 +282,9 @@ int main() {
 				cout << "*squak* thank you!\n";
 				set_world_location(row, col, ' ');
 				movecursor(ROWS + 2, 0);
+					for (int i = 1; i < COLS-1; i++) {
+					    set_world_location(31, i, '~');
+					}
 				//TODO: remove pearl from inventory
 				InventoryItems.erase(InventoryItems.begin() + index);
 			} else {
@@ -410,9 +413,6 @@ int main() {
 						row -= 1;
 					}
 					// Puzzle 3 door
-					for (int i = 1; i < COLS-1; i++) {
-					    set_world_location(31, i, '~');
-					}
 					cout << "maybe a rock would work?" << endl;
 					oysterCount ++;
 					usleep(2'000'000);
@@ -499,6 +499,9 @@ int main() {
 					}
 					cout << CYAN << "WALRUS🦭:" << RESET << endl;
 					cout << "Well done! You got all 3 questions right, you may pass\n";
+					for (int i = 1; i < COLS-1; i++) {
+					    set_world_location(41, i, '~');
+					}
 					usleep(2'000'000);
 				} else if (correctCount == 2) {
 					if (c == 'A' or c == LEFT_ARROW) {
@@ -512,6 +515,9 @@ int main() {
 					}
 					cout << CYAN << "WALRUS🦭:" << RESET << endl;
 					cout << "Thats a passing score, I'll let you go.\n";
+					for (int i = 1; i < COLS-1; i++) {
+					    set_world_location(41, i, '~');
+					}
 					usleep(2'000'000);
 				} else if (correctCount == 1) {
 					if (c == 'A' or c == LEFT_ARROW) {
@@ -525,6 +531,9 @@ int main() {
 					}
 					cout << CYAN << "WALRUS🦭:" << RESET << endl;
 					cout << "I feel bad, you can pass.\n";
+					for (int i = 1; i < COLS-1; i++) {
+					    set_world_location(41, i, '~');
+					}
 					usleep(2'000'000);
 				} else if (wrongCount == 3) {
 					if (c == 'A' or c == LEFT_ARROW) {
@@ -538,6 +547,9 @@ int main() {
 					}
 					cout << CYAN << "WALRUS🦭:" << RESET << endl;
 					cout << "Did you even try? Whatever, just get out of here already.\n";
+					for (int i = 1; i < COLS-1; i++) {
+					    set_world_location(41, i, '~');
+					}
 					usleep(2'000'000);
 				}
 			}
@@ -629,9 +641,6 @@ int main() {
 				set_world_location(13, 25, ' ');
 				set_world_location(13, 27, ' ');
 				movecursor(ROWS + 2, 0);
-				for (int i = 1; i < COLS-1; i++) {
-				    set_world_location(41, i, '~');
-				}
 				Inventory wrong3;
 				wrong3.name = "Wrong!";
 				wrong3.icon = "❌";
@@ -665,6 +674,9 @@ int main() {
 		//*
 		if (fishCount == 7) {
 			movecursor(ROWS + 2, 0);
+			for (int i = 1; i < COLS-1; i++) {
+			    set_world_location(41, i, '~');
+			}
 			cout << "YOU WIN!!!!!!!!!\n";
 			usleep(2'000'000);
 			break;
