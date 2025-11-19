@@ -58,19 +58,6 @@ vector<string> world_map = {
 	"*       G       |---           *",
 	"*   ---         |        S     *",
 	"*------------------------------*", // row 41, unlocks when Walrus questions complete
-	"*   f   S   f          S       *",
-	"*       ---     |   f          *",
-	"*   S      G f            S    *",
-	"*       |   S   |---           *",
-	"*   f       |   |   G   f      *",
-	"*   ---       S |              *",
-	"*   S   G   |       S          *",
-	"*   f       |---|       f      *",
-	"*   S   f       |S          S  *",
-	"*------------------------------*", // row 51, unlocks after all 7 fish eaten
-	"********************************"
-=======
-	 "********************************",
     "* r    |     G        S      r *",
     "*      |                G      *",
     "*  S   |   ---               S *",
@@ -89,7 +76,7 @@ vector<string> world_map = {
     "*   r  |    S   |      G       *",
     "*      |        |              *",
     "*  G   |        |         z    *",
-    "********************************" // This row should turn into ~~~~~~~~~~~~~~~~~~~~~~~ once the player picks up the blue shell (B for now), allowiing them to now cross it
+    "********************************" // Row 51, ulocks after all 7 fish eaten
 >>>>>>> 5785f84 (Edited world map and README)
 };
 
