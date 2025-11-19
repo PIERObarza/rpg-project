@@ -26,9 +26,9 @@ vector<string> world_map = {
 	"* S   | -- S                   *",
 	"*   S |                    f   *",
 	"*     ---                      *",
-	"*            L                 *",
+	"*                              *",
 	"*   f                          *",
-	"*       c    G                 *",
+	"*                              *",
 	"*                              *",
 	"*------------------------------*", // This row should turn into ~~~~~~~~~~~~~~~~~~~~~~~ once the player picks up the blue shell (B for now), allowing them to now cross it
 	"*                              *",
