@@ -95,6 +95,9 @@ void print_world(size_t player_row, size_t player_col) {
 			else if (c == 'z') cout << BOLDCYAN  << c << RESET;
 			else if (c == 'd') cout << YELLOW  << c << RESET;
 			else if (c == 'x') cout << BOLDRED  << c << RESET;
+			
+			if (row == player_row and col == player_col) cout << '@';
+		    
 			else
 				cout << c;
 		}
@@ -746,5 +749,4 @@ int main() {
 
 
 }
-
 
