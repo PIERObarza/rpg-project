@@ -15,6 +15,7 @@ using namespace std;
 
 
 vector<string> world_map = {
+<<<<<<< HEAD
 	"********************************",
 	"* S               B       |    *",
 	"*  S                      | O  *",
@@ -68,6 +69,28 @@ vector<string> world_map = {
 	"*   S   f       |S          S  *",
 	"*------------------------------*", // row 51, unlocks after all 7 fish eaten
 	"********************************"
+=======
+	 "********************************",
+    "* r    |     G        S      r *",
+    "*      |                G      *",
+    "*  S   |   ---               S *",
+    "*      |     x ---             *",
+    "*  G   |        |         G    *",
+    "*      |   B    |              *",
+    "* S    |  ---   |   -- S       *",
+    "*      |        |              *",
+    "* r    |   G    |         r    *",
+    "*      |        |              *",
+    "*  S   |   --   |    G         *",
+    "*      |      r |              *",
+    "*  G   |        |         S    *",
+    "*------|--------|--------------*",
+    "*      |        |              *",
+    "*   r  |    S   |      G       *",
+    "*      |        |              *",
+    "*  G   |        |         z    *",
+    "********************************" // This row should turn into ~~~~~~~~~~~~~~~~~~~~~~~ once the player picks up the blue shell (B for now), allowiing them to now cross it
+>>>>>>> 5785f84 (Edited world map and README)
 };
 
 char get_world_location(size_t row, size_t col) {
