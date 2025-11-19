@@ -1,6 +1,6 @@
 //Fill out this comment with your names and which bullet points you did
 //Partners: Willems, Tran, Cook, Ugaz
-//Bullet Points: Willems - Puzzles, Tran - Colors, Cook - Combat, Ugaz - World Map
+//Bullet Points: Willems - Puzzles & Inventory, Tran - Colors & Combat System, Cook - World Map
 //Extra Credit:
 //URL to cover art and music:
 #include "/public/read.h"
@@ -8,6 +8,7 @@
 #include <vector>
 #include <algorithm>
 #include <unistd.h>
+#include <limits>
 using namespace std;
 
 //MAP FUNCTION DECLARATIONS
@@ -16,18 +17,18 @@ using namespace std;
 //Base for Level one only so far
 vector<string> world_map = {
 	"********************************",
-	"* r                       |    *",
-	"*  S                      | d  *",
+	"* f               f       |    *",
+	"*  S                      | f  *",
 	"*          S              |    *",
-	"*                       x ---  *",
-	"*     ---                    z *",
+	"*                       f ---  *",
+	"*     ---                    f *",
 	"*     |B|                      *",
 	"* S   | -- S                   *",
-	"*   S |                    r   *",
-	"*     ---           L          *",
-	"*               C              *",
-	"*                              *",
-	"*  G                            *",
+	"*   S |                    f   *",
+	"*     ---                      *",
+	"*            L                 *",
+	"*   f                          *",
+	"*       c    G                 *",
 	"*                              *",
 	"*------------------------------*", // This row should turn into ~~~~~~~~~~~~~~~~~~~~~~~ once the player picks up the blue shell (B for now), allowing them to now cross it
 	"*                              *",
@@ -57,12 +58,18 @@ void print_world(size_t player_row, size_t player_col) {
 			char c = world_map.at(row).at(col);
 			if (row == player_row and col == player_col) cout << '@';
 			else if (c == '*') cout << GREEN << c << RESET;
-			else if (c == 'B') cout << BLUE << c << RESET;
-			else if (c == 'S') cout << RED << c << RESET;
-			else if (c == 'r') cout << MAGENTA  << c << RESET;
-			else if (c == 'z') cout << BOLDCYAN  << c << RESET;
-			else if (c == 'd') cout << YELLOW  << c << RESET;
-			else if (c == 'x') cout << BOLDRED  << c << RESET;
+            else if (c == 'B') cout << BLUE << c << RESET;
+            else if (c == 'S') cout << RED << c << RESET;
+            else if (c == 'R') cout << MAGENTA  << c << RESET;
+            else if (c == 'K') cout << BOLDCYAN  << c << RESET;
+            else if (c == 'O') cout << YELLOW  << c << RESET;
+            else if (c == 'f') cout << BOLDRED  << c << RESET;
+            else if (c == 'a') cout << BOLDBLUE  << c << RESET;
+            else if (c == 'b') cout << BOLDGREEN  << c << RESET;
+            else if (c == 'C') cout << BOLDYELLOW  << c << RESET;
+            else if (c == 'G') cout << CYAN << c << RESET;
+			 else if (c == 'c') cout << GREEN << c << RESET;
+			  else if (c == 'L') cout << BOLDMAGENTA << c << RESET;
 			else
 				cout << c;
 		}
@@ -70,8 +77,6 @@ void print_world(size_t player_row, size_t player_col) {
 	}
 }
 
-//TODO: Make a class/struct
-//i was thinking of making an inventory thing idk
 struct Inventory {
 	string name = "none";
 	string color = BOLDBLACK;
@@ -89,72 +94,18 @@ struct Inventory {
 int main() {
 	//vector for the class
 	vector<Inventory> InventoryItems;
+	//dialogue system counters
 	int crowCount = 0;
 	int oysterCount = 0;
+	bool intro = true;
+	int walrusCount = 0;
+	int correctCount = 0;
+	int wrongCount = 0;
+	int fishCount = 0;
+
 
 	//MAP STARTS HERE
-
-	//*TODO Bunny Demo Code
-
-	/*	cout << RED << "Hello World!\n" << RESET << "I am Reset.\n" << GREEN << "Welcome to the Farm!\n";
-		cout << BOLDBLACK << "This is boldblack!\n";
-		cout << BOLDGREEN << "This is boldgreen!\n";
-		cout << RESET;
-		setbgcolor(60,40,200);
-		setcolor(200,40,60);
-		cout << "Hit a number to continue\n";
-		int temp;
-		cin >> temp;
-		set_cursor_mode(false);
-		for (int i = 0; i < 255; i++) {
-		clearscreen();
-		setbgcolor(0,0,255-i);
-		setcolor(i,0,0);
-		movecursor(i % 10,i % 30);
-	//movecursor(0,0);
-	cout << "Welcome to the Spooky Door" << endl;
-	usleep(100'000); //Pauses the program for 10'000 usec
-	}
-	cout << RESET;
-	resetcolor();
-	//Ocean Blue: 35, 125, 150
-
-	//Move a monster on the screen
-	const auto [ROWS,COLS] = get_terminal_size(); //How big the screen
-	cout << ROWS << " " << COLS << endl;
-	int x = COLS / 2;
-	int y = ROWS / 2;
-	setcolor(53,97,43);
-	//cin requires raw mode off
-	//quick_read requires raw mode on
-	//You can switch back and forth as you like
-	set_raw_mode(true); //Nonblocking I/O
-	while (true) {
-	int ch = quick_read(); //Read from the keyboard
-	if (ch == ERR) {
-	//cout << "User didn't type anything!\n";
-	usleep(100'000);
-	}
-	if (ch == 'Q' or ch == 'q') break;
-	if (ch == UP_ARROW) y--;
-	if (ch == DOWN_ARROW) y++;
-	if (ch == LEFT_ARROW) x--;
-	if (ch == RIGHT_ARROW) x++;
-	y = clamp(y,0,ROWS-2);
-	x = clamp(x,0,COLS-2);
-	clearscreen();
-	movecursor(y,x);
-	cout << "🐰" << endl;
-	}
-	//Clean up after yourself
-	set_raw_mode(false);
-	resetcolor();
-	set_cursor_mode(true);
-	clearscreen();
-	*/
-
-	//*TODO non blocking IO demo code
-
+	//TODO non blocking IO demo code
 
 	const int ROWS = world_map.size();
 	const int COLS = world_map.at(0).size(); //MAKE SURE ALL ROWS ARE THE SAME SIZE OR BAD TIMES
@@ -177,7 +128,12 @@ int main() {
 			movecursor(2, COLS + 5);
 			cout << BLUE << "ROW: " << row << RED << " COL: " << col << RESET;
 			movecursor(ROWS + 2, 0);
-			cout << "Welcome to the game\n";
+			if (intro) {
+				cout << "Welcome to the game\n";
+				cout << "In this game, you play as a sea otter exploring the world.\n";
+				cout << "For this first level, you need to find the " << BLUE << "Blue Shell🐚" << RESET << endl;
+				intro = false;
+			}
 			for (int i = 0; i < InventoryItems.size(); i++) {
 				InventoryItems.at(i).PrintInventory();
 			}
@@ -186,7 +142,11 @@ int main() {
 		//make the walls actually work
 		//TODO: make the collitions better
 		if (get_world_location(row, col) == '-') {
-			if (c == 'W' or c == UP_ARROW) {
+			if (c == 'A' or c == LEFT_ARROW) {
+				col += 1;
+			} else if (c == 'S' or c == RIGHT_ARROW) {
+				col -= 1;
+			} else if (c == 'W' or c == UP_ARROW) {
 				row += 1;
 			} else {
 				row -= 1;
@@ -195,8 +155,12 @@ int main() {
 		if (get_world_location(row, col) == '|') {
 			if (c == 'A' or c == LEFT_ARROW) {
 				col += 1;
-			} else {
+			} else if (c == 'S' or c == RIGHT_ARROW) {
 				col -= 1;
+			} else if (c == 'W' or c == UP_ARROW) {
+				row += 1;
+			} else {
+				row -= 1;
 			}
 		}
 		//PUZZLE 1:
@@ -266,16 +230,20 @@ int main() {
 		//TODO: make this less bad
 		if (get_world_location(row, col) == 'C') {
 			bool pearl = false;
+			int index = 0;
 			for (int i = 0; i < InventoryItems.size(); i++) {
 				if (InventoryItems.at(i).name == "Pearl") {
 					pearl = true;
+					index = i;
 				}
 			}
 			if (pearl) {
+				cout << BOLDBLACK << "CROW🐦:" << RESET << endl;
 				cout << "*squak* thank you!\n";
 				set_world_location(row, col, ' ');
 				movecursor(ROWS + 2, 0);
 				//TODO: remove pearl from inventory
+				InventoryItems.erase(InventoryItems.begin() + index);
 			} else {
 				if (crowCount > 3) crowCount = 0;
 				if (crowCount < 2) {
@@ -350,7 +318,7 @@ int main() {
 				pearl.color = BOLDWHITE;
 				InventoryItems.push_back(pearl);
 			} else {
-				//TODO: figure out why the text wont go past the first one
+				//I used AI to debug the code from here
 				if (oysterCount > 4) oysterCount = 0;
 				if (oysterCount < 2) {
 					if (c == 'A' or c == LEFT_ARROW) {
@@ -363,9 +331,9 @@ int main() {
 						row -= 1;
 					}
 					cout << "It's an oyster🦪\n";
-					crowCount ++;
+					oysterCount ++;
 					usleep(2'000'000);
-				} else if (crowCount == 2) {
+				} else if (oysterCount == 2) {
 					if (c == 'A' or c == LEFT_ARROW) {
 						col += 1;
 					} else if (c == 'S' or c == RIGHT_ARROW) {
@@ -376,9 +344,9 @@ int main() {
 						row -= 1;
 					}
 					cout << "How would I open this oyster?" << endl;
-					crowCount ++;
+					oysterCount ++;
 					usleep(2'000'000);
-				} else if (crowCount == 3) {
+				} else if (oysterCount == 3) {
 					if (c == 'A' or c == LEFT_ARROW) {
 						col += 1;
 					} else if (c == 'S' or c == RIGHT_ARROW) {
@@ -389,9 +357,9 @@ int main() {
 						row -= 1;
 					}
 					cout << "Is there anything I could use to smash this open?" << endl;
-					crowCount ++;
+					oysterCount ++;
 					usleep(2'000'000);
-				}  else if (crowCount == 4) {
+				}  else if (oysterCount == 4) {
 					if (c == 'A' or c == LEFT_ARROW) {
 						col += 1;
 					} else if (c == 'S' or c == RIGHT_ARROW) {
@@ -402,30 +370,403 @@ int main() {
 						row -= 1;
 					}
 					cout << "maybe a rock would work?" << endl;
-					crowCount ++;
+					oysterCount ++;
 					usleep(2'000'000);
 				}
 			}
+			//To here
+		}
+		//END PUZZLE 3
+		//PUZZLE 4:
+		//WALRUS RIDDLES
+		//its literally just a walrus asking riddles
+		if (get_world_location(row, col) == 'W') {
+			if (walrusCount == 0) {
+				if (c == 'A' or c == LEFT_ARROW) {
+					col += 1;
+				} else if (c == 'S' or c == RIGHT_ARROW) {
+					col -= 1;
+				} else if (c == 'W' or c == UP_ARROW) {
+					row += 1;
+				} else {
+					row -= 1;
+				}
+				cout << CYAN << "WALRUS🦭:" << RESET << endl;
+				cout << "Hello, answer my trivia if you wish to pass" << endl;
+				cout << "First question: With which fish species do anemones have a symbiotic relationship?" << endl;
+				cout << "Is it a) The Catfish, b) The Shrimp, or c) The Clownfish?\n";
+				set_world_location(13, 23, 'a');
+				set_world_location(13, 25, 'b');
+				set_world_location(13, 27, 'c');
+				usleep(3'000'000);
+			} else if (walrusCount == 1) {
+				if (c == 'A' or c == LEFT_ARROW) {
+					col += 1;
+				} else if (c == 'S' or c == RIGHT_ARROW) {
+					col -= 1;
+				} else if (c == 'W' or c == UP_ARROW) {
+					row += 1;
+				} else {
+					row -= 1;
+				}
+				cout << CYAN << "WALRUS🦭:" << RESET << endl;
+				cout << "Question 2: What is the largest species of shark?" << endl;
+				cout << "Is it a) The Great White Shark, b) The Whale Shark, or c) The Hammerhead Shark?\n";
+				set_world_location(13, 23, 'a');
+				set_world_location(13, 25, 'b');
+				set_world_location(13, 27, 'c');
+				usleep(3'000'000);
+			} else if (walrusCount == 2) {
+				if (c == 'A' or c == LEFT_ARROW) {
+					col += 1;
+				} else if (c == 'S' or c == RIGHT_ARROW) {
+					col -= 1;
+				} else if (c == 'W' or c == UP_ARROW) {
+					row += 1;
+				} else {
+					row -= 1;
+				}
+				cout << CYAN << "WALRUS🦭:" << RESET << endl;
+				cout << "Final Question: What is the term for light produced by marine animals?" << endl;
+				cout << "Is it a) Bioluminescence, b) Waterlights, or c) Sealumens?\n";
+				set_world_location(13, 23, 'a');
+				set_world_location(13, 25, 'b');
+				set_world_location(13, 27, 'c');
+				usleep(3'000'000);
+			}
+			//I used AI to debug starting here
+			else if (walrusCount == 3) {
+				for (int i = 0; i < InventoryItems.size(); i++) {
+					if ((InventoryItems.at(i).name == "c) The Clownfish") || (InventoryItems.at(i).name == "b) The Whale Shark") || (InventoryItems.at(i).name == "a) Bioluminescence")) {
+						correctCount++;
+					} else if (InventoryItems.at(i).name == "Wrong!") {
+						wrongCount++;
+					}
+				}
+				if (correctCount == 3) {
+					if (c == 'A' or c == LEFT_ARROW) {
+						col += 1;
+					} else if (c == 'S' or c == RIGHT_ARROW) {
+						col -= 1;
+					} else if (c == 'W' or c == UP_ARROW) {
+						row += 1;
+					} else {
+						row -= 1;
+					}
+					cout << CYAN << "WALRUS🦭:" << RESET << endl;
+					cout << "Well done! You got all 3 questions right, you may pass\n";
+					usleep(2'000'000);
+				} else if (correctCount == 2) {
+					if (c == 'A' or c == LEFT_ARROW) {
+						col += 1;
+					} else if (c == 'S' or c == RIGHT_ARROW) {
+						col -= 1;
+					} else if (c == 'W' or c == UP_ARROW) {
+						row += 1;
+					} else {
+						row -= 1;
+					}
+					cout << CYAN << "WALRUS🦭:" << RESET << endl;
+					cout << "Thats a passing score, I'll let you go.\n";
+					usleep(2'000'000);
+				} else if (correctCount == 1) {
+					if (c == 'A' or c == LEFT_ARROW) {
+						col += 1;
+					} else if (c == 'S' or c == RIGHT_ARROW) {
+						col -= 1;
+					} else if (c == 'W' or c == UP_ARROW) {
+						row += 1;
+					} else {
+						row -= 1;
+					}
+					cout << CYAN << "WALRUS🦭:" << RESET << endl;
+					cout << "I feel bad, you can pass.\n";
+					usleep(2'000'000);
+				} else if (wrongCount == 3) {
+					if (c == 'A' or c == LEFT_ARROW) {
+						col += 1;
+					} else if (c == 'S' or c == RIGHT_ARROW) {
+						col -= 1;
+					} else if (c == 'W' or c == UP_ARROW) {
+						row += 1;
+					} else {
+						row -= 1;
+					}
+					cout << CYAN << "WALRUS🦭:" << RESET << endl;
+					cout << "Did you even try? Whatever, just get out of here already.\n";
+					usleep(2'000'000);
+				}
+			}
+			//And ending here
 		}
 
-		//END PUZZLE 3
+		if (walrusCount == 0) {
+			if (get_world_location(row, col) == 'c') {
+				cout << CYAN << "WALRUS🦭:" << RESET << endl;
+				cout << "Correct! It is the clownfish.\n";
+				cout << "Come to me to recieve your next question." << endl;
+				//deletes a, b, and c from the world, the numbers can be changed as need be
+				set_world_location(13, 23, ' ');
+				set_world_location(13, 25, ' ');
+				set_world_location(13, 27, ' ');
+				movecursor(ROWS + 2, 0);
+				Inventory right1;
+				right1.name = "c) The Clownfish";
+				right1.icon = "🐠";
+				right1.color = YELLOW;
+				//OPTIONAL: figure out how to make the text orange
+				InventoryItems.push_back(right1);
+				walrusCount ++;
+			} else if ((get_world_location(row, col) == 'b') || (get_world_location(row, col) == 'a')) {
+				cout << CYAN << "WALRUS🦭:" << RESET << endl;
+				cout << "That is incorrect. The answer was the clownfish. Have you ever seen Finding Nemo?" << endl;
+				cout << "Come to me to recieve your next question." << endl;
+				set_world_location(13, 23, ' ');
+				set_world_location(13, 25, ' ');
+				set_world_location(13, 27, ' ');
+				movecursor(ROWS + 2, 0);
+				Inventory wrong1;
+				wrong1.name = "Wrong!";
+				wrong1.icon = "❌";
+				wrong1.color = RED;
+				InventoryItems.push_back(wrong1);
+				walrusCount ++;
+			}
+		} else if (walrusCount == 1) {
+			if (get_world_location(row, col) == 'b') {
+				cout << CYAN << "WALRUS🦭:" << RESET << endl;
+				cout << "Correct! It is the whale shark.\n";
+				cout << "Come to me to recieve your final question." << endl;
+				set_world_location(13, 23, ' ');
+				set_world_location(13, 25, ' ');
+				set_world_location(13, 27, ' ');
+				movecursor(ROWS + 2, 0);
+				Inventory right2;
+				right2.name = "b) The Whale Shark";
+				right2.icon = "🦈";
+				right2.color = BOLDBLACK;
+				InventoryItems.push_back(right2);
+				walrusCount ++;
+			} else if ((get_world_location(row, col) == 'c') || (get_world_location(row, col) == 'a')) {
+				cout << CYAN << "WALRUS🦭:" << RESET << endl;
+				cout << "That is incorrect. The largest shark is actually the whale shark.\n";
+				cout << "Come to me to recieve your final question." << endl;
+				set_world_location(13, 23, ' ');
+				set_world_location(13, 25, ' ');
+				set_world_location(13, 27, ' ');
+				movecursor(ROWS + 2, 0);
+				Inventory wrong2;
+				wrong2.name = "Wrong!";
+				wrong2.icon = "❌";
+				wrong2.color = RED;
+				InventoryItems.push_back(wrong2);
+				walrusCount ++;
+			}
+		} else if (walrusCount == 2) {
+			if (get_world_location(row, col) == 'a') {
+				cout << CYAN << "WALRUS🦭:" << RESET << endl;
+				cout << "Correct! It is bioluminescence.\n";
+				cout << "Come to me to recieve your score." << endl;
+				set_world_location(13, 23, ' ');
+				set_world_location(13, 25, ' ');
+				set_world_location(13, 27, ' ');
+				movecursor(ROWS + 2, 0);
+				Inventory right3;
+				right3.name = "a) Bioluminescence";
+				right3.icon = "💡";
+				right3.color = BLUE;
+				InventoryItems.push_back(right3);
+				walrusCount ++;
+			} else if ((get_world_location(row, col) == 'c') || (get_world_location(row, col) == 'b')) {
+				cout << CYAN << "WALRUS🦭:" << RESET << endl;
+				cout << "That is incorrect. The correct term is bioluminescence. Waterlights are something in Terraria and I just made up sealumens.\n";
+				cout << "Come to me to recieve your score." << endl;
+				set_world_location(13, 23, ' ');
+				set_world_location(13, 25, ' ');
+				set_world_location(13, 27, ' ');
+				movecursor(ROWS + 2, 0);
+				Inventory wrong3;
+				wrong3.name = "Wrong!";
+				wrong3.icon = "❌";
+				wrong3.color = RED;
+				InventoryItems.push_back(wrong3);
+				walrusCount ++;
+			}
+		}
+		//END OF PUZZLE 4
+		
+	// Tran -------------- AI Start ------------------
 
+
+		// --- COMBAT SYSTEM ADD-ON ---
+static int playerHealth = 15;
+static int goblinHealth = 10;
+
+const int PLAYER_DAMAGE = 2;   // @ deals 2 damage
+const int GOBLIN_DAMAGE = 2;   // Goblin deals 2 damage
+const int AFTER_BATTLE_DAMAGE = 5;
+
+if (get_world_location(row, col) == 'G') {
+
+    movecursor(ROWS + 2, 0);
+    cout << "A goblin appears!\n";
+
+    // Combat loop
+    while (playerHealth > 0 && goblinHealth > 0) {
+        cout << "\n--- COMBAT ---\n";
+        cout << GREEN << "@ Health: " << GREEN <<  playerHealth << RESET << endl;
+        cout << RED << "Goblin Health: " << RED <<  goblinHealth << RESET << endl;
+        cout << MAGENTA << "@ Damage: " << MAGENTA  << PLAYER_DAMAGE << RESET << endl;
+        cout << BOLDCYAN    << "Goblin Damage: " << CYAN  << GOBLIN_DAMAGE << RESET << endl;
+        cout << "Choose an action:\n";
+        cout << "(A) Attack\n";
+        cout << "(B) Use Item\n";
+        cout << "> ";
+
+        char choice;
+        do {
+            choice = toupper(quick_read());
+        } while (choice != 'A' && choice != 'B');
+
+        // --- A: ATTACK ---
+        if (choice == 'A') {
+
+            cout << "\n@ attacks and deals " << PLAYER_DAMAGE << " damage!\n";
+            goblinHealth -= PLAYER_DAMAGE;
+            cout << "Goblin HP is now: " << goblinHealth << endl;
+
+            if (goblinHealth <= 0) break;
+
+            cout << "Goblin attacks and deals " << GOBLIN_DAMAGE << " damage!\n";
+            playerHealth -= GOBLIN_DAMAGE;
+            cout << "@ HP is now: " << playerHealth << endl;
+        }
+
+        // --- B: USE ITEM ---
+        else if (choice == 'B') {
+
+            cout << "\n----- YOUR INVENTORY -----\n";
+
+            if (InventoryItems.empty()) {
+                cout << "Inventory is empty.\n";
+                cout << "---------------------------\n";
+                usleep(800000);
+                continue;
+            }
+
+            // Print items
+            for (int i = 0; i < InventoryItems.size(); i++) {
+                cout << i + 1 << ". ";
+                InventoryItems[i].PrintInventory();
+            }
+
+            cout << "---------------------------\n";
+
+            // clean buffer
+            cin.clear();
+            cin.ignore(1000, '\n');
+
+            cout << "Select item number to use (0 to cancel): ";
+
+            string numStr;
+            cin >> numStr;
+
+            cout << "You selected: " << numStr << endl;
+
+            if (numStr == "0") {
+                cout << "Canceled.\n";
+                usleep(800000);
+                continue;
+            }
+
+            int index = stoi(numStr) - 1;
+
+            if (index >= 0 && index < InventoryItems.size()) {
+
+                // Shell🐚 effect
+                if (InventoryItems[index].name == "Shell" ||
+                    InventoryItems[index].name == "Shell🐚")
+                {
+                    playerHealth += 2;
+                    cout << "You used Shell🐚! +2 HP recovered.\n";
+                    cout << "@ HP is now: " << playerHealth << endl;
+
+                    InventoryItems.erase(InventoryItems.begin() + index);
+                }
+                else {
+                    cout << "This item has no effect.\n";
+                }
+            }
+            else {
+                cout << "Invalid choice.\n";
+            }
+
+            usleep(800000);
+            continue;
+        }
+
+        usleep(800000);
+    }
+
+    // --- End states ---
+    if (playerHealth <= 0) {
+        cout << "\nYou have been defeated...\n";
+        usleep(2000000);
+        exit(0);
+    }
+
+    if (goblinHealth <= 0) {
+        cout << "\nYou defeated the goblin!\n";
+
+        // After battle penalty
+        cout << CYAN << "@ takes " << AFTER_BATTLE_DAMAGE << " damage after battle!\n" << RESET;
+        playerHealth -= AFTER_BATTLE_DAMAGE;
+        cout << GREEN << "@ HP is now: " << playerHealth << RESET << endl;
+
+        if (playerHealth <= 0) {
+            cout << "\n@ collapses after the battle...\n";
+            usleep(2000000);
+            exit(0);
+        }
+
+        set_world_location(row, col, ' ');
+        usleep(1500000);
+    }
+}
+// --- END COMBAT SYSTEM ---
+
+		// ----------------------AI End----------------------------------
+		
+		
+		//PUZZLE 5
+		//Eat all the fish
+		//for the sake of getting the game done, the player needs to eat all 7 fish to win.
+		//but that number can be changed idc
+		if (get_world_location(row, col) == 'f') {
+			set_world_location(row, col, ' ');
+			movecursor(ROWS + 2, 0);
+			cout << "You ate a fish!\n";
+			Inventory fish;
+			fish.name = "Fish";
+			fish.icon = "🐟";
+			fish.color = BOLDBLUE;
+			InventoryItems.push_back(fish);
+			fishCount++;
+		}
 
 		//idk why but when i comment out the code in asterisks it breaks the program lol
 		//specifically it says there's mismatched curly braces
 		//*
-		if (get_world_location(row, col) == 'z') {
+		if (fishCount == 7) {
 			movecursor(ROWS + 2, 0);
-			cout << "YOU WIN!!!!!!!!!\n";
+			cout << "YOU WIN!!!!!!!!!\n";
 			usleep(2'000'000);
 			break;
 		}//*
 		//so we should probably fix that at some point
 		if (c == ERR) usleep(1'000'000 / FPS);
 	}
-
-
-	//MAP ENDS HERE
+	//END PUZZLE 5
 
 
 	//PUZZLE IDEAS:
@@ -475,51 +816,6 @@ int main() {
 	//the game is in color so it'll make more visual sense in color form
 
 
-
-
-
-	/*const int ROWS = world_map.size();
-	  const int COLS = world_map.at(0).size(); //MAKE SURE ALL ROWS ARE THE SAME SIZE OR BAD TIMES
-	  const int FPS = 60;
-	  int row = ROWS / 2, col = COLS / 2;
-	  int last_row = -1, last_col = -1; //Save our last position so we only redraw on update
-	  set_raw_mode(true);
-	  show_cursor(false);
-	  while (true) {
-	  int c = toupper(quick_read());
-	  if (c == 'Q') break;
-	  if (c == 'W' or c == UP_ARROW) row--;
-	  if (c == 'S' or c == DOWN_ARROW) row++;
-	  if (c == 'A' or c == LEFT_ARROW) col--;
-	  if (c == 'D' or c == RIGHT_ARROW) col++;
-	  if (!(row == last_row and col == last_col)) { //If we moved...
-	  print_world(row, col); //...redraw the map
-	  last_row = row;
-	  last_col = col;
-	  movecursor(2, COLS + 5);
-	  cout << BLUE << "ROW: " << row << RED << " COL: " << col << RESET;
-	  movecursor(ROWS + 2, 0);
-	  cout << "Welcome to the game\n";
-	  cout.flush();
-	  }
-	  if (get_world_location(row, col) == "r") {
-	  set_world_location(row, col, " ");
-	  movecursor(ROWS + 2, 0);
-	  cout << "You picked up a radish!\n";
-	  }
-	  if (get_world_location(row, col) == "z") {
-	  movecursor(ROWS + 2, 0);
-	  cout << "YOU WIN!!!!!!!!!^G^G^G\n";
-	  usleep(2'000'000);
-	  break;
-	  }
-	  if (c == ERR) usleep(1'000'000 / FPS);
-	  }
-	  set_raw_mode(false);
-	  show_cursor(true);
-	  movecursor(0, 0);
-	  clearscreen(); */
-
 	//VERY END OF CODE, CLEARS SCREEN AND GETS RID OF MAP STUFF
 
 
@@ -530,5 +826,3 @@ int main() {
 
 
 }
-
-
