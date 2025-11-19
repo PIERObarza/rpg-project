@@ -14,7 +14,6 @@ using namespace std;
 //MAP FUNCTION DECLARATIONS
 
 
-//Base for Level one only so far
 vector<string> world_map = {
 	"********************************",
 	"* f               f       |    *",
@@ -27,14 +26,47 @@ vector<string> world_map = {
 	"*   S |                    f   *",
 	"*     ---                      *",
 	"*                              *",
-	"*   f                          *",
-	"*                              *",
-	"*                              *",
 	"*------------------------------*", // This row should turn into ~~~~~~~~~~~~~~~~~~~~~~~ once the player picks up the blue shell (B for now), allowing them to now cross it
-	"*                              *",
-	"*                              *",
-	"*                              *",
-	"*                              *",
+	"*                        d     *", // Later parts of the map are written by ChatGPT with user modifications
+	"*       S       |              *",
+	"*   ---     --- |   d          *",
+	"*               |              *",
+	"*   |     |     |   ---        *",
+	"*   |  S  |     |              *",
+	"*   ---     --- |      S       *",
+	"*   |K|--      |   B           *",
+	"*   |                          *",
+	"*------------------------------*",
+	"*   S       |       R          *",
+	"*       --- |                  *",
+	"*   O   G   |S         S       *",
+	"*   |       |      ---         *",
+	"*       S   |    C             *",
+	"*   ---     |S                 *",
+	"*   S       |          S       *",
+	"*           |---               *",
+	"*   S                  S  R    *",
+	"*------------------------------*", // row 31, unlocks when Pearl given to Crow
+	"*       W       |S             *",
+	"*   ---     --- |      S       *",
+	"*   a   G   b   |              *",
+	"*   |S          |S     ---     *",
+	"*       c                      *",
+	"*   ---     --- |  S           *",
+	"*   S           |       G      *",
+	"*       S       |---           *",
+	"*   ---         |        S     *",
+	"*------------------------------*", // row 41, unlocks when Walrus questions complete
+	"*   f   S   f          S       *",
+	"*       ---     |   f          *",
+	"*   S      G f            S    *",
+	"*       |   S   |---           *",
+	"*   f       |   |   G   f      *",
+	"*   ---       S |              *",
+	"*   S   G   |       S          *",
+	"*   f       |---|       f      *",
+	"*   S   f       |S          S  *",
+	"*------------------------------*", // row 51, unlocks after all 7 fish eaten
 	"********************************"
 };
 
@@ -110,7 +142,7 @@ int main() {
 	const int ROWS = world_map.size();
 	const int COLS = world_map.at(0).size(); //MAKE SURE ALL ROWS ARE THE SAME SIZE OR BAD TIMES
 	const int FPS = 60;
-	int row = ROWS / 2, col = COLS / 2;
+	int row = 2, col = 5;
 	int last_row = -1, last_col = -1; //Save our last position so we only redraw on update
 	set_raw_mode(true);
 	show_cursor(false);
@@ -141,10 +173,11 @@ int main() {
 		}
 		//make the walls actually work
 		//TODO: make the collitions better
+		//CHATGPT WRITTEN COLLISIONS
 		if (get_world_location(row, col) == '-') {
 			if (c == 'A' or c == LEFT_ARROW) {
 				col += 1;
-			} else if (c == 'S' or c == RIGHT_ARROW) {
+			} else if (c == 'D' or c == RIGHT_ARROW) {
 				col -= 1;
 			} else if (c == 'W' or c == UP_ARROW) {
 				row += 1;
@@ -152,10 +185,11 @@ int main() {
 				row -= 1;
 			}
 		}
+		//CHATGPT WRITTEN COLLISIONS
 		if (get_world_location(row, col) == '|') {
 			if (c == 'A' or c == LEFT_ARROW) {
 				col += 1;
-			} else if (c == 'S' or c == RIGHT_ARROW) {
+			} else if (c == 'D' or c == RIGHT_ARROW) {
 				col -= 1;
 			} else if (c == 'W' or c == UP_ARROW) {
 				row += 1;
@@ -163,6 +197,18 @@ int main() {
 				row -= 1;
 			}
 		}
+		//CHATGPT WRITTEN COLLISIONS
+		if (get_world_location(row, col) == '*') {
+            if (c == 'A' or c == LEFT_ARROW) {
+                col += 1;
+            } else if (c == 'D' or c == RIGHT_ARROW) {
+                col -= 1;
+            } else if (c == 'W' or c == UP_ARROW) {
+                row += 1;
+            } else {
+                row -= 1;
+            }
+        }
 		//PUZZLE 1:
 		//Collision detection for the "shells"
 		if (get_world_location(row, col) == 'S') {
@@ -179,8 +225,8 @@ int main() {
 			set_world_location(row, col, ' ');
 			movecursor(ROWS + 2, 0);
 			cout << "You picked up the blue shell!\n";
-			for (int i = 1; i < 31; i++) {
-				set_world_location(14, i, '~');
+			for (int i = 1; i < COLS-1; i++) {
+				set_world_location(11, i, '~');
 			}
 			Inventory blueShell;
 			blueShell.name = "Shell";
@@ -219,6 +265,9 @@ int main() {
 			set_world_location(row, col, ' ');
 			movecursor(ROWS + 2, 0);
 			cout << "You picked up the key!\n";
+			for (int i = 1; i < COLS-1; i++) {
+				set_world_location(21, i, '~');
+			}
 			Inventory key;
 			key.name = "Key";
 			key.icon = "🔑";
@@ -242,6 +291,9 @@ int main() {
 				cout << "*squak* thank you!\n";
 				set_world_location(row, col, ' ');
 				movecursor(ROWS + 2, 0);
+					for (int i = 1; i < COLS-1; i++) {
+					    set_world_location(31, i, '~');
+					}
 				//TODO: remove pearl from inventory
 				InventoryItems.erase(InventoryItems.begin() + index);
 			} else {
@@ -249,7 +301,7 @@ int main() {
 				if (crowCount < 2) {
 					if (c == 'A' or c == LEFT_ARROW) {
 						col += 1;
-					} else if (c == 'S' or c == RIGHT_ARROW) {
+					} else if (c == 'D' or c == RIGHT_ARROW) {
 						col -= 1;
 					} else if (c == 'W' or c == UP_ARROW) {
 						row += 1;
@@ -264,7 +316,7 @@ int main() {
 				} else if (crowCount == 2) {
 					if (c == 'A' or c == LEFT_ARROW) {
 						col += 1;
-					} else if (c == 'S' or c == RIGHT_ARROW) {
+					} else if (c == 'D' or c == RIGHT_ARROW) {
 						col -= 1;
 					} else if (c == 'W' or c == UP_ARROW) {
 						row += 1;
@@ -277,7 +329,7 @@ int main() {
 				} else if (crowCount == 3) {
 					if (c == 'A' or c == LEFT_ARROW) {
 						col += 1;
-					} else if (c == 'S' or c == RIGHT_ARROW) {
+					} else if (c == 'D' or c == RIGHT_ARROW) {
 						col -= 1;
 					} else if (c == 'W' or c == UP_ARROW) {
 						row += 1;
@@ -323,7 +375,7 @@ int main() {
 				if (oysterCount < 2) {
 					if (c == 'A' or c == LEFT_ARROW) {
 						col += 1;
-					} else if (c == 'S' or c == RIGHT_ARROW) {
+					} else if (c == 'D' or c == RIGHT_ARROW) {
 						col -= 1;
 					} else if (c == 'W' or c == UP_ARROW) {
 						row += 1;
@@ -336,7 +388,7 @@ int main() {
 				} else if (oysterCount == 2) {
 					if (c == 'A' or c == LEFT_ARROW) {
 						col += 1;
-					} else if (c == 'S' or c == RIGHT_ARROW) {
+					} else if (c == 'D' or c == RIGHT_ARROW) {
 						col -= 1;
 					} else if (c == 'W' or c == UP_ARROW) {
 						row += 1;
@@ -349,7 +401,7 @@ int main() {
 				} else if (oysterCount == 3) {
 					if (c == 'A' or c == LEFT_ARROW) {
 						col += 1;
-					} else if (c == 'S' or c == RIGHT_ARROW) {
+					} else if (c == 'D' or c == RIGHT_ARROW) {
 						col -= 1;
 					} else if (c == 'W' or c == UP_ARROW) {
 						row += 1;
@@ -362,13 +414,14 @@ int main() {
 				}  else if (oysterCount == 4) {
 					if (c == 'A' or c == LEFT_ARROW) {
 						col += 1;
-					} else if (c == 'S' or c == RIGHT_ARROW) {
+					} else if (c == 'D' or c == RIGHT_ARROW) {
 						col -= 1;
 					} else if (c == 'W' or c == UP_ARROW) {
 						row += 1;
 					} else {
 						row -= 1;
 					}
+					// Puzzle 3 door
 					cout << "maybe a rock would work?" << endl;
 					oysterCount ++;
 					usleep(2'000'000);
@@ -384,7 +437,7 @@ int main() {
 			if (walrusCount == 0) {
 				if (c == 'A' or c == LEFT_ARROW) {
 					col += 1;
-				} else if (c == 'S' or c == RIGHT_ARROW) {
+				} else if (c == 'D' or c == RIGHT_ARROW) {
 					col -= 1;
 				} else if (c == 'W' or c == UP_ARROW) {
 					row += 1;
@@ -402,7 +455,7 @@ int main() {
 			} else if (walrusCount == 1) {
 				if (c == 'A' or c == LEFT_ARROW) {
 					col += 1;
-				} else if (c == 'S' or c == RIGHT_ARROW) {
+				} else if (c == 'D' or c == RIGHT_ARROW) {
 					col -= 1;
 				} else if (c == 'W' or c == UP_ARROW) {
 					row += 1;
@@ -419,7 +472,7 @@ int main() {
 			} else if (walrusCount == 2) {
 				if (c == 'A' or c == LEFT_ARROW) {
 					col += 1;
-				} else if (c == 'S' or c == RIGHT_ARROW) {
+				} else if (c == 'D' or c == RIGHT_ARROW) {
 					col -= 1;
 				} else if (c == 'W' or c == UP_ARROW) {
 					row += 1;
@@ -446,7 +499,7 @@ int main() {
 				if (correctCount == 3) {
 					if (c == 'A' or c == LEFT_ARROW) {
 						col += 1;
-					} else if (c == 'S' or c == RIGHT_ARROW) {
+					} else if (c == 'D' or c == RIGHT_ARROW) {
 						col -= 1;
 					} else if (c == 'W' or c == UP_ARROW) {
 						row += 1;
@@ -455,11 +508,14 @@ int main() {
 					}
 					cout << CYAN << "WALRUS🦭:" << RESET << endl;
 					cout << "Well done! You got all 3 questions right, you may pass\n";
+					for (int i = 1; i < COLS-1; i++) {
+					    set_world_location(41, i, '~');
+					}
 					usleep(2'000'000);
 				} else if (correctCount == 2) {
 					if (c == 'A' or c == LEFT_ARROW) {
 						col += 1;
-					} else if (c == 'S' or c == RIGHT_ARROW) {
+					} else if (c == 'D' or c == RIGHT_ARROW) {
 						col -= 1;
 					} else if (c == 'W' or c == UP_ARROW) {
 						row += 1;
@@ -468,11 +524,14 @@ int main() {
 					}
 					cout << CYAN << "WALRUS🦭:" << RESET << endl;
 					cout << "Thats a passing score, I'll let you go.\n";
+					for (int i = 1; i < COLS-1; i++) {
+					    set_world_location(41, i, '~');
+					}
 					usleep(2'000'000);
 				} else if (correctCount == 1) {
 					if (c == 'A' or c == LEFT_ARROW) {
 						col += 1;
-					} else if (c == 'S' or c == RIGHT_ARROW) {
+					} else if (c == 'D' or c == RIGHT_ARROW) {
 						col -= 1;
 					} else if (c == 'W' or c == UP_ARROW) {
 						row += 1;
@@ -481,11 +540,14 @@ int main() {
 					}
 					cout << CYAN << "WALRUS🦭:" << RESET << endl;
 					cout << "I feel bad, you can pass.\n";
+					for (int i = 1; i < COLS-1; i++) {
+					    set_world_location(41, i, '~');
+					}
 					usleep(2'000'000);
 				} else if (wrongCount == 3) {
 					if (c == 'A' or c == LEFT_ARROW) {
 						col += 1;
-					} else if (c == 'S' or c == RIGHT_ARROW) {
+					} else if (c == 'D' or c == RIGHT_ARROW) {
 						col -= 1;
 					} else if (c == 'W' or c == UP_ARROW) {
 						row += 1;
@@ -494,6 +556,9 @@ int main() {
 					}
 					cout << CYAN << "WALRUS🦭:" << RESET << endl;
 					cout << "Did you even try? Whatever, just get out of here already.\n";
+					for (int i = 1; i < COLS-1; i++) {
+					    set_world_location(41, i, '~');
+					}
 					usleep(2'000'000);
 				}
 			}
@@ -750,6 +815,9 @@ if (get_world_location(row, col) == 'G') {
 			set_world_location(row, col, ' ');
 			movecursor(ROWS + 2, 0);
 			cout << "You ate a fish!\n";
+			for (int i = 1; i < COLS-1; i++) {
+				set_world_location(51, i, '~');
+			}
 			Inventory fish;
 			fish.name = "Fish";
 			fish.icon = "🐟";
@@ -763,7 +831,10 @@ if (get_world_location(row, col) == 'G') {
 		//*
 		if (fishCount == 7) {
 			movecursor(ROWS + 2, 0);
-			cout << "YOU WIN!!!!!!!!!\n";
+ 			for (int i = 1; i < COLS-1; i++) {
+			    set_world_location(41, i, '~');
+			}
+			cout << "YOU WIN!!!!!!!!!\n";
 			usleep(2'000'000);
 			break;
 		}//*
@@ -830,3 +901,4 @@ if (get_world_location(row, col) == 'G') {
 
 
 }
+
