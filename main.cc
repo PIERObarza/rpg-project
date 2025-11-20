@@ -1,6 +1,6 @@
 //Fill out this comment with your names and which bullet points you did
 //Partners: Willems, Tran, Cook, Ugaz
-//Bullet Points: Willems - Puzzles & Inventory, Tran - Colors & Combat System, Piero - World Map
+//Bullet Points: Willems - Puzzles & Inventory, Tran - Colors & Combat System, Cook and Ugaz - World Map
 //Extra Credit:
 //URL to cover art and music:
 #include "/public/read.h"

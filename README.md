@@ -2,7 +2,7 @@
 <<<<<<< HEAD
 Haven - Puzzles
 Tran - Colors & Combat system
-Cook - World Map.
+Cook and Ugaz - World Map.
 
 For the World Map criteria we have one map that the player is capable of moving around and interacting with.
 In the combat system, we used AI to complete the project.
