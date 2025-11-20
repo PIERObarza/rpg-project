@@ -1,6 +1,6 @@
 //Fill out this comment with your names and which bullet points you did
 //Partners: Willems, Tran, Cook, Ugaz
-//Bullet Points: Willems - Puzzles & Inventory, Tran - Colors & Combat System, Cook - World Map
+//Bullet Points: Willems - Puzzles & Inventory, Tran - Colors & Combat System, Piero - World Map
 //Extra Credit:
 //URL to cover art and music:
 #include "/public/read.h"
@@ -15,69 +15,67 @@ using namespace std;
 
 
 vector<string> world_map = {
-<<<<<<< HEAD
-	"********************************",
-	"* S               B       |    *",
-	"*  S                      | O  *",
-	"*          S              |    *",
-	"*f                      S ---  *",
-	"*     ---                      *",
-	"*     |B|                      *",
-	"* S   | -- S              f    *",
-	"*   S |                        *",
-	"*     ---                      *",
-	"*                              *",
-	"*------------------------------*", // This row should turn into ~~~~~~~~~~~~~~~~~~~~~~~ once the player picks up the blue shell (B for now), allowing them to now cross it
-	"*                        d     *", // Later parts of the map are written by ChatGPT with user modifications
-	"*       S       |              *",
-	"*   ---     --- |   d          *",
-	"*               |              *",
-	"*   |     |     |   ---        *",
-	"*   |  S  |     |              *",
-	"*   ---     --- |      S       *",
-	"*   |K|--      |   L           *",
-	"*   |                          *",
-	"*------------------------------*",
-	"*   S       |       R          *",
-	"*       --- |                  *",
-	"*   O   G   |S         S       *",
-	"*   |       |      ---         *",
-	"*       S   |    C             *",
-	"*   ---     |S                 *",
-	"*   S       |          S       *",
-	"*           |---               *",
-	"*   S                  S  R    *",
-	"*------------------------------*", // row 31, unlocks when Pearl given to Crow
-	"*       W       |S             *",
-	"*   ---     --- |      S       *",
-	"*               |              *",
-	"*   |S          |S     ---     *",
-	"*                              *",
-	"*   ---     --- |  S           *",
-	"*   S           |       G      *",
-	"*       G       |---           *",
-	"*   ---         |        S     *",
-	"*------------------------------*", // row 41, unlocks when Walrus questions complete
-    "* r    |     G        S      r *",
-    "*      |                G      *",
-    "*  S   |   ---               S *",
+     "********************************",
+    "* S       ---         B     |   *",
+    "*  S     |   |               | O*",
+    "*        | S |       S       |  *",
+    "*f       |   |               S--*",
+    "*     ---             ---       *",
+    "*     |B|                       *",
+    "* S   | -- S         f           *",
+    "*   S |        ---              *",
+    "*     ---                        *",
+    "*                                *",
+    "*------------------------------*", // This row should turn into ~~~~~~~~~~~~~~~~~~~~~~~ once the player picks up the blue shell (B for now), allowing them to now cross it
+    "*                       d        *", // Later parts of the map are written by ChatGPT with user modifications
+    "*       S       |                *",
+    "*   ---     --- |   d            *",
+    "*       |             |          *",
+    "*   |     |     |   ---           *",
+    "*   |  S  |     |                *",
+    "*   ---     --- |      S         *",
+    "*   |K|--      |   L             *",
+    "*   |                          *",
+    "*------------------------------*",
+    "*   S       |       R            *",
+    "*       --- |                    *",
+    "*   O   G   |S         S         *",
+    "*   |       |      ---           *",
+    "*       S   |    C               *",
+    "*   ---     |S                   *",
+    "*   S       |          S         *",
+    "*           |---                 *",
+    "*   S                  S  R      *",
+    "*------------------------------*", // row 31, unlocks when Pearl given to Crow
+    "*       W       |S               *",
+    "*   ---     --- |      S         *",
+    "*               |                *",
+    "*   |S          |S     ---       *",
+    "*                                *",
+    "*   ---     --- |  S             *",
+    "*   S           |       G        *",
+    "*       G       |---             *",
+    "*   ---         |        S       *",
+    "*------------------------------*", // row 41, unlocks when Walrus questions complete
+    "* r    |     G        S      r   *",
+    "*      |                G        *",
+    "*  S   |   ---               S   *",
     "*      |     x ---             *",
-    "*  G   |        |         G    *",
-    "*      |   B    |              *",
-    "* S    |  ---   |   -- S       *",
-    "*      |        |              *",
-    "* r    |   G    |         r    *",
-    "*      |        |              *",
-    "*  S   |   --   |    G         *",
-    "*      |      r |              *",
-    "*  G   |        |         S    *",
-    "*------|--------|--------------*",
-    "*      |        |              *",
-    "*   r  |    S   |      G       *",
-    "*      |        |              *",
-    "*  G   |        |         z    *",
-    "********************************" // Row 51, ulocks after all 7 fish eaten
->>>>>>> 5785f84 (Edited world map and README)
+    "*  G   |        |         G      *",
+    "*      |   B    |                *",
+    "* S    |  ---   |   -- S         *",
+    "*      |        |                *",
+    "* r    |   G    |         r      *",
+    "*      |        |                *",
+    "*  S   |   --   |    G           *",
+    "*      |      r |                *",
+    "*  G   |        |         S      *",
+    "*------|--------|----------------*",
+    "*      |        |                *",
+    "*   r  |    S   |      G         *",
+    "*      |        |                *",
+    "*  G   |        |         z      *",
+    "********************************" // Row 51, unlocks after all 7 fish eaten
 };
 
 char get_world_location(size_t row, size_t col) {
